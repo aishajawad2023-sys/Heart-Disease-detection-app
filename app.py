@@ -1,63 +1,58 @@
 import streamlit as st
+import pickle
 import numpy as np
-import joblib
 
-# Load trained model
-model = joblib.load("heart_disease_model.pkl")
+# Load model
+model = pickle.load(open("heart_model.pkl", "rb"))
+scaler = pickle.load(open("scaler.pkl", "rb"))
 
-# Page settings
-st.set_page_config(
-    page_title="Heart Disease Predictor",
-    page_icon="❤️",
-    layout="centered"
-)
+st.title("❤️ Heart Disease Predictor")
 
-# Title
-st.title("❤️ Heart Disease Prediction")
-st.write("Enter patient information below and click Predict.")
+st.write("Enter patient information below")
 
 # Inputs
-age = st.number_input("Age", min_value=1, max_value=120, value=50)
+
+age = st.number_input("Age", 20, 100, 50)
 
 sex = st.selectbox(
     "Sex",
-    ["Female", "Male"]
+    [0, 1]
 )
 
 cp = st.selectbox(
-    "Chest Pain Type",
+    "Chest Pain Type (cp)",
     [0, 1, 2, 3]
 )
 
 trestbps = st.number_input(
     "Resting Blood Pressure",
-    min_value=50,
-    max_value=250,
-    value=120
+    80,
+    250,
+    120
 )
 
 chol = st.number_input(
-    "Cholesterol (mg/dl)",
-    min_value=100,
-    max_value=700,
-    value=200
+    "Cholesterol",
+    100,
+    600,
+    200
 )
 
 fbs = st.selectbox(
-    "Fasting Blood Sugar > 120 mg/dl",
+    "Fasting Blood Sugar >120",
     [0, 1]
 )
 
 restecg = st.selectbox(
-    "Resting ECG Result",
+    "Resting ECG",
     [0, 1, 2]
 )
 
 thalach = st.number_input(
-    "Maximum Heart Rate Achieved",
-    min_value=50,
-    max_value=250,
-    value=150
+    "Maximum Heart Rate",
+    50,
+    250,
+    150
 )
 
 exang = st.selectbox(
@@ -66,11 +61,10 @@ exang = st.selectbox(
 )
 
 oldpeak = st.number_input(
-    "Oldpeak",
-    min_value=0.0,
-    max_value=10.0,
-    value=1.0,
-    step=0.1
+    "Old Peak",
+    0.0,
+    10.0,
+    1.0
 )
 
 slope = st.selectbox(
@@ -80,23 +74,21 @@ slope = st.selectbox(
 
 ca = st.selectbox(
     "Number of Major Vessels",
-    [0, 1, 2, 3]
+    [0, 1, 2, 3, 4]
 )
 
 thal = st.selectbox(
     "Thal",
-    [0, 1, 2]
+    [0, 1, 2, 3]
 )
 
-# Convert categorical value
-sex_value = 1 if sex == "Male" else 0
+# Predict button
 
-# Prediction
 if st.button("Predict"):
 
-    patient = np.array([[
+    data = np.array([[
         age,
-        sex_value,
+        sex,
         cp,
         trestbps,
         chol,
@@ -110,9 +102,11 @@ if st.button("Predict"):
         thal
     ]])
 
-    prediction = model.predict(patient)
+    data = scaler.transform(data)
+
+    prediction = model.predict(data)
 
     if prediction[0] == 1:
-        st.error("⚠️ Heart Disease Detected")
+        st.error("⚠️ Heart Disease Predicted")
     else:
-        st.success("✅ No Heart Disease Detected")
+        st.success("✅ No Heart Disease Predicted")
