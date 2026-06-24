@@ -6,18 +6,27 @@ import joblib
 
 model = joblib.load("heart_disease_model.pkl")
 
+# Page configuration
+
 st.set_page_config(
 page_title="Heart Disease Predictor",
 page_icon="❤️",
 layout="centered"
 )
 
+# Title
+
 st.title("❤️ Heart Disease Prediction")
 st.write("Enter patient information below.")
 
 # Input Fields
 
-age = st.number_input("Age", min_value=1, max_value=120, value=50)
+age = st.number_input(
+"Age",
+min_value=1,
+max_value=120,
+value=50
+)
 
 sex = st.selectbox(
 "Sex",
@@ -88,14 +97,14 @@ thal = st.selectbox(
 [0, 1, 2]
 )
 
+# Convert sex to numeric
+
 sex_value = 1 if sex == "Male" else 0
 
-if 
-    st.button("Predict"):
-File "/mount/src/heart-disease-detection-app/app.py", line 95
-  ```
-  ^
-IndentationError: expected an indented block after 'if' statement on line 93
+# Predict button
+
+if st.button("Predict"):
+
 ```
 patient = np.array([[
     age,
@@ -120,3 +129,4 @@ if prediction[0] == 1:
 else:
     st.success("✅ No Heart Disease Detected")
 ```
+
