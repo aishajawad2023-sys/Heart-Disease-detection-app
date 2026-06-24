@@ -90,8 +90,12 @@ thal = st.selectbox(
 
 sex_value = 1 if sex == "Male" else 0
 
-if st.button("Predict"):
-
+if 
+    st.button("Predict"):
+File "/mount/src/heart-disease-detection-app/app.py", line 95
+  ```
+  ^
+IndentationError: expected an indented block after 'if' statement on line 93
 ```
 patient = np.array([[
     age,
