@@ -103,9 +103,10 @@ sex_value = 1 if sex == "Male" else 0
 
 # Predict button
 
-if st.button("Predict"):
+if 
+    st.button("Predict"):
 
-```
+
 patient = np.array([[
     age,
     sex_value,
